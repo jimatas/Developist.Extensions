@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+    <Product>Developist.Extensions</Product>
+    <Authors>Jim Atas</Authors>
+    <Company>Developist</Company>
+    <Copyright>Copyright (c) $([System.DateTime]::Now.Year) $(Authors)</Copyright>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Version>1.0.0-alpha</Version>
+    <Major>$(Version.Split('.')[0])</Major>
+    <Minor>$(Version.Split('.')[1])</Minor>
+    <Build>$([System.Math]::Floor($([System.DateTime]::Now.Subtract($([System.DateTime]::Parse("01-01-2000"))).TotalDays)))</Build>
+    <Revision>$([System.Math]::Floor($([MSBuild]::Divide($([System.DateTime]::Now.Subtract($([System.DateTime]::Today)).TotalSeconds), 2.0))))</Revision>
+    <AssemblyVersion>$(Major).$(Minor).$(Build).$(Revision)</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+    <NeutralLanguage>en</NeutralLanguage>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Description>Application development library extensions.</Description>
+    <PackageTags>logging log4net</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/jimatas/Developist.Extensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jimatas/Developist.Extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../License.txt" Pack="True" PackagePath="$(PackageLicenseFile)"/>
+  </ItemGroup>
+</Project>
