@@ -59,7 +59,7 @@ namespace Developist.Extensions.Logging.Log4Net
                 }
 
                 var itemType = item.GetType();
-                if (itemType == typeof(KeyValuePair<,>))
+                if (itemType.DerivesFromGenericParent(typeof(KeyValuePair<,>)))
                 {
                     var typeArguments = itemType.GetGenericArguments();
                     if (typeArguments.First() != typeof(string))
