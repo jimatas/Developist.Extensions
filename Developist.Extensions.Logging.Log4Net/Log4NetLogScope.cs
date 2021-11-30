@@ -63,20 +63,16 @@ namespace Developist.Extensions.Logging.Log4Net
                 }
 
                 var itemType = item.GetType();
-                if (itemType.DerivesFromGenericParent(typeof(KeyValuePair<,>)))
+                if (itemType.DerivesFromGenericParent(typeof(KeyValuePair<,>)) && itemType.GetGenericArguments().First() == typeof(string))
                 {
-                    var typeArguments = itemType.GetGenericArguments();
-                    if (typeArguments.First() != typeof(string))
+                    var value = itemType.GetProperty(nameof(KeyValuePair<string, object>.Value)).GetValue(item);
+                    if (value is null)
                     {
-                        break;
+                        continue;
                     }
 
-                    var value = itemType.GetProperty(nameof(KeyValuePair<string, object>.Value)).GetValue(item);
-                    if (value != null)
-                    {
-                        var key = itemType.GetProperty(nameof(KeyValuePair<string, object>.Key)).GetValue(item).ToString();
-                        disposables.Push(log4net.LogicalThreadContext.Stacks[key].Push(value.ToString()));
-                    }
+                    var key = itemType.GetProperty(nameof(KeyValuePair<string, object>.Key)).GetValue(item).ToString();
+                    disposables.Push(log4net.LogicalThreadContext.Stacks[key].Push(value.ToString()));
                 }
                 else
                 {
