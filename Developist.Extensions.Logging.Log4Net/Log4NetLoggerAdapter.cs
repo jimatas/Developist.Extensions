@@ -71,7 +71,7 @@ namespace Developist.Extensions.Logging.Log4Net
             {
                 case LogLevel.Trace:
                 case LogLevel.Debug:
-                    logger.Debug(message);
+                    logger.Debug(message, exception);
                     break;
                 case LogLevel.Information:
                     logger.Info(message, exception);
