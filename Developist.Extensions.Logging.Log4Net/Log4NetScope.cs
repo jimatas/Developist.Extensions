@@ -12,7 +12,7 @@ namespace Developist.Extensions.Logging.Log4Net
 {
     internal class Log4NetScope : DisposableBase
     {
-        private const string DefaultStack = "Scope";
+        private const string DefaultStack = "scope";
         private readonly Stack<IDisposable> disposables = new Stack<IDisposable>();
 
         public Log4NetScope(object state) => PushOntoThreadContextStack(state);
