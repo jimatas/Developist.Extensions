@@ -25,14 +25,14 @@ namespace Developist.Extensions.Logging.Log4Net
             log4net.Config.XmlConfigurator.Configure(loggerRepository, configurationElement);
         }
 
-        public IDisposable BeginScope<TState>(TState state) => throw new NotImplementedException("Scopes are not supported for log4net.");
+        public IDisposable BeginScope<TState>(TState state) => new Log4NetScope(state);
 
         public bool IsEnabled(LogLevel logLevel)
         {
             switch (logLevel)
             {
-                case LogLevel.Debug:
                 case LogLevel.Trace:
+                case LogLevel.Debug:
                     return logger.IsDebugEnabled;
                 case LogLevel.Information:
                     return logger.IsInfoEnabled;
@@ -42,6 +42,8 @@ namespace Developist.Extensions.Logging.Log4Net
                     return logger.IsErrorEnabled;
                 case LogLevel.Critical:
                     return logger.IsFatalEnabled;
+                case LogLevel.None:
+                    return false;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(logLevel), $"Not a valid {nameof(LogLevel)} value.");
             }
@@ -64,8 +66,8 @@ namespace Developist.Extensions.Logging.Log4Net
 
             switch (logLevel)
             {
-                case LogLevel.Debug:
                 case LogLevel.Trace:
+                case LogLevel.Debug:
                     logger.Debug(message);
                     break;
                 case LogLevel.Information:
