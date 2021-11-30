@@ -6,8 +6,6 @@ using Developist.Core.Utilities;
 using Microsoft.Extensions.Logging;
 
 using System;
-using System.Reflection;
-using System.Xml;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
@@ -16,15 +14,9 @@ namespace Developist.Extensions.Logging.Log4Net
         private readonly log4net.ILog logger;
         private readonly LoggerOptions options;
 
-        public LoggerAdapter(string categoryName, XmlElement configurationElement, LoggerOptions options)
+        public LoggerAdapter(log4net.ILog logger, LoggerOptions options)
         {
-            Ensure.Argument.NotNullOrEmpty(() => categoryName);
-            Ensure.Argument.NotNull(() => configurationElement);
-
-            var loggerRepository = log4net.LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
-            logger = log4net.LogManager.GetLogger(loggerRepository.Name, categoryName);
-            log4net.Config.XmlConfigurator.Configure(loggerRepository, configurationElement);
-
+            this.logger = Ensure.Argument.NotNull(() => logger);
             this.options = Ensure.Argument.NotNull(() => options);
         }
 
