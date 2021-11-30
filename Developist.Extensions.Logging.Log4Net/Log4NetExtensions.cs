@@ -5,19 +5,29 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
+using System;
+
 namespace Developist.Extensions.Logging.Log4Net
 {
     public static class Log4NetExtensions
     {
-        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder loggingBuilder, string configurationFile = "log4net.config", string configurationSectionName = "log4net")
+        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder loggingBuilder) => loggingBuilder.AddLog4Net(_ => { });
+        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder loggingBuilder, Action<Log4NetLoggerOptions> configureOptions)
         {
-            loggingBuilder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, Log4NetLoggerProvider>(_ => new Log4NetLoggerProvider(configurationFile, configurationSectionName)));
+            var options = new Log4NetLoggerOptions();
+            configureOptions(options);
+
+            loggingBuilder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, Log4NetLoggerProvider>(_ => new Log4NetLoggerProvider(options)));
             return loggingBuilder;
         }
 
-        public static ILoggerFactory AddLog4Net(this ILoggerFactory loggerFactory, string configurationFile = "log4net.config", string configurationSectionName = "log4net")
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory loggerFactory) => loggerFactory.AddLog4Net(_ => { });
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory loggerFactory, Action<Log4NetLoggerOptions> configureOptions)
         {
-            loggerFactory.AddProvider(new Log4NetLoggerProvider(configurationFile, configurationSectionName));
+            var options = new Log4NetLoggerOptions();
+            configureOptions(options);
+
+            loggerFactory.AddProvider(new Log4NetLoggerProvider(options));
             return loggerFactory;
         }
     }

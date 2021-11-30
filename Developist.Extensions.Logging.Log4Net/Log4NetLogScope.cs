@@ -10,12 +10,16 @@ using System.Linq;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    internal class Log4NetScope : DisposableBase
+    public class Log4NetLogScope : DisposableBase
     {
-        private const string DefaultStack = "scope";
         private readonly Stack<IDisposable> disposables = new Stack<IDisposable>();
+        private readonly Log4NetLoggerOptions options;
 
-        public Log4NetScope(object state) => PushOntoThreadContextStack(state);
+        public Log4NetLogScope(object state, Log4NetLoggerOptions options)
+        {
+            this.options = Ensure.Argument.NotNull(() => options);
+            PushOntoThreadContextStack(state);
+        }
 
         protected override void ReleaseManagedResources()
         {
@@ -37,7 +41,7 @@ namespace Developist.Extensions.Logging.Log4Net
 
             if (state is string str)
             {
-                disposables.Push(log4net.LogicalThreadContext.Stacks[DefaultStack].Push(str));
+                disposables.Push(log4net.LogicalThreadContext.Stacks[options.DefaultScopeName].Push(str));
             }
             else if (state is IEnumerable collection)
             {
@@ -45,7 +49,7 @@ namespace Developist.Extensions.Logging.Log4Net
             }
             else
             {
-                disposables.Push(log4net.LogicalThreadContext.Stacks[DefaultStack].Push(state.ToString()));
+                disposables.Push(log4net.LogicalThreadContext.Stacks[options.DefaultScopeName].Push(state.ToString()));
             }
         }
 
@@ -76,7 +80,7 @@ namespace Developist.Extensions.Logging.Log4Net
                 }
                 else
                 {
-                    disposables.Push(log4net.LogicalThreadContext.Stacks[DefaultStack].Push(item.ToString()));
+                    disposables.Push(log4net.LogicalThreadContext.Stacks[options.DefaultScopeName].Push(item.ToString()));
                 }
             }
         }

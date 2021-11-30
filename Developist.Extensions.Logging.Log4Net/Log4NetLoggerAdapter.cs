@@ -14,8 +14,9 @@ namespace Developist.Extensions.Logging.Log4Net
     public class Log4NetLoggerAdapter : ILogger
     {
         private readonly log4net.ILog logger;
+        private readonly Log4NetLoggerOptions options;
 
-        public Log4NetLoggerAdapter(string categoryName, XmlElement configurationElement)
+        public Log4NetLoggerAdapter(string categoryName, XmlElement configurationElement, Log4NetLoggerOptions options)
         {
             Ensure.Argument.NotNullOrEmpty(() => categoryName);
             Ensure.Argument.NotNull(() => configurationElement);
@@ -23,9 +24,11 @@ namespace Developist.Extensions.Logging.Log4Net
             var loggerRepository = log4net.LogManager.CreateRepository(Assembly.GetEntryAssembly(), typeof(log4net.Repository.Hierarchy.Hierarchy));
             logger = log4net.LogManager.GetLogger(loggerRepository.Name, categoryName);
             log4net.Config.XmlConfigurator.Configure(loggerRepository, configurationElement);
+
+            this.options = Ensure.Argument.NotNull(() => options);
         }
 
-        public IDisposable BeginScope<TState>(TState state) => new Log4NetScope(state);
+        public IDisposable BeginScope<TState>(TState state) => new Log4NetLogScope(state, options);
 
         public bool IsEnabled(LogLevel logLevel)
         {

@@ -14,17 +14,12 @@ namespace Developist.Extensions.Logging.Log4Net
     public class Log4NetLoggerProvider : DisposableBase, ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, Log4NetLoggerAdapter> loggers = new ConcurrentDictionary<string, Log4NetLoggerAdapter>();
-        private readonly string configurationFile;
-        private readonly string configurationSectionName;
+        private readonly Log4NetLoggerOptions options;
 
-        public Log4NetLoggerProvider(string configurationFile, string configurationSectionName = "log4net")
-        {
-            this.configurationFile = Ensure.Argument.NotNullOrEmpty(() => configurationFile);
-            this.configurationSectionName = configurationSectionName;
-        }
+        public Log4NetLoggerProvider(Log4NetLoggerOptions options) => this.options = Ensure.Argument.NotNull(() => options);
 
         public ILogger CreateLogger(string categoryName)
-            => loggers.GetOrAdd(categoryName, _ => new Log4NetLoggerAdapter(categoryName, ParseConfigurationFile(configurationFile, configurationSectionName)));
+            => loggers.GetOrAdd(categoryName, _ => new Log4NetLoggerAdapter(categoryName, ParseConfigurationFile(options), options));
 
         protected override void ReleaseManagedResources()
         {
@@ -32,15 +27,15 @@ namespace Developist.Extensions.Logging.Log4Net
             base.ReleaseManagedResources();
         }
 
-        private static XmlElement ParseConfigurationFile(string configurationFile, string configurationSectionName)
+        private static XmlElement ParseConfigurationFile(Log4NetLoggerOptions options)
         {
             var configurationDocument = new XmlDocument();
-            using (var fileStream = File.OpenRead(configurationFile))
+            using (var fileStream = File.OpenRead(options.ConfigurationFilePath))
             {
                 configurationDocument.Load(fileStream);
                 fileStream.Close();
             }
-            return (XmlElement)configurationDocument.GetElementsByTagName(configurationSectionName).Item(0);
+            return (XmlElement)configurationDocument.GetElementsByTagName(options.ConfigurationSectionName).Item(0);
         }
     }
 }
