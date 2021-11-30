@@ -11,15 +11,15 @@ using System.Xml;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public class Log4NetLoggerProvider : DisposableBase, ILoggerProvider
+    public class LoggerProvider : DisposableBase, ILoggerProvider
     {
-        private readonly ConcurrentDictionary<string, Log4NetLoggerAdapter> loggers = new ConcurrentDictionary<string, Log4NetLoggerAdapter>();
-        private readonly Log4NetLoggerOptions options;
+        private readonly ConcurrentDictionary<string, LoggerAdapter> loggers = new ConcurrentDictionary<string, LoggerAdapter>();
+        private readonly LoggerOptions options;
 
-        public Log4NetLoggerProvider(Log4NetLoggerOptions options) => this.options = Ensure.Argument.NotNull(() => options);
+        public LoggerProvider(LoggerOptions options) => this.options = Ensure.Argument.NotNull(() => options);
 
         public ILogger CreateLogger(string categoryName)
-            => loggers.GetOrAdd(categoryName, _ => new Log4NetLoggerAdapter(categoryName, ParseConfigurationFile(options), options));
+            => loggers.GetOrAdd(categoryName, _ => new LoggerAdapter(categoryName, ParseConfigurationFile(options), options));
 
         protected override void ReleaseManagedResources()
         {
@@ -27,7 +27,7 @@ namespace Developist.Extensions.Logging.Log4Net
             base.ReleaseManagedResources();
         }
 
-        private static XmlElement ParseConfigurationFile(Log4NetLoggerOptions options)
+        private static XmlElement ParseConfigurationFile(LoggerOptions options)
         {
             var configurationDocument = new XmlDocument();
             using (var fileStream = File.OpenRead(options.ConfigurationFilePath))

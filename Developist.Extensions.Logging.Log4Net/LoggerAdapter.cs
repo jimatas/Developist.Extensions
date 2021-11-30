@@ -11,12 +11,12 @@ using System.Xml;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public class Log4NetLoggerAdapter : ILogger
+    public class LoggerAdapter : ILogger
     {
         private readonly log4net.ILog logger;
-        private readonly Log4NetLoggerOptions options;
+        private readonly LoggerOptions options;
 
-        public Log4NetLoggerAdapter(string categoryName, XmlElement configurationElement, Log4NetLoggerOptions options)
+        public LoggerAdapter(string categoryName, XmlElement configurationElement, LoggerOptions options)
         {
             Ensure.Argument.NotNullOrEmpty(() => categoryName);
             Ensure.Argument.NotNull(() => configurationElement);
@@ -28,7 +28,7 @@ namespace Developist.Extensions.Logging.Log4Net
             this.options = Ensure.Argument.NotNull(() => options);
         }
 
-        public IDisposable BeginScope<TState>(TState state) => new Log4NetLogScope(state, options);
+        public IDisposable BeginScope<TState>(TState state) => new LogScope(state, options);
 
         public bool IsEnabled(LogLevel logLevel)
         {

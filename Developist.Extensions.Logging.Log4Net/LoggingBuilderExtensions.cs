@@ -9,25 +9,25 @@ using System;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public static class Log4NetExtensions
+    public static class LoggingBuilderExtensions
     {
         public static ILoggingBuilder AddLog4Net(this ILoggingBuilder loggingBuilder) => loggingBuilder.AddLog4Net(_ => { });
-        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder loggingBuilder, Action<Log4NetLoggerOptions> configureOptions)
+        public static ILoggingBuilder AddLog4Net(this ILoggingBuilder loggingBuilder, Action<LoggerOptions> configureOptions)
         {
-            var options = new Log4NetLoggerOptions();
+            var options = new LoggerOptions();
             configureOptions(options);
 
-            loggingBuilder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, Log4NetLoggerProvider>(_ => new Log4NetLoggerProvider(options)));
+            loggingBuilder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, LoggerProvider>(_ => new LoggerProvider(options)));
             return loggingBuilder;
         }
 
         public static ILoggerFactory AddLog4Net(this ILoggerFactory loggerFactory) => loggerFactory.AddLog4Net(_ => { });
-        public static ILoggerFactory AddLog4Net(this ILoggerFactory loggerFactory, Action<Log4NetLoggerOptions> configureOptions)
+        public static ILoggerFactory AddLog4Net(this ILoggerFactory loggerFactory, Action<LoggerOptions> configureOptions)
         {
-            var options = new Log4NetLoggerOptions();
+            var options = new LoggerOptions();
             configureOptions(options);
 
-            loggerFactory.AddProvider(new Log4NetLoggerProvider(options));
+            loggerFactory.AddProvider(new LoggerProvider(options));
             return loggerFactory;
         }
     }

@@ -3,7 +3,7 @@
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public class Log4NetLoggerOptions
+    public class LoggerOptions
     {
         public string ConfigurationFilePath { get; set; } = "log4net.config";
         public string ConfigurationSectionName { get; set; } = "log4net";

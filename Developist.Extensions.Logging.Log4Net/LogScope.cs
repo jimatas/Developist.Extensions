@@ -10,12 +10,12 @@ using System.Linq;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public class Log4NetLogScope : DisposableBase
+    public class LogScope : DisposableBase
     {
         private readonly Stack<IDisposable> disposables = new Stack<IDisposable>();
-        private readonly Log4NetLoggerOptions options;
+        private readonly LoggerOptions options;
 
-        public Log4NetLogScope(object state, Log4NetLoggerOptions options)
+        public LogScope(object state, LoggerOptions options)
         {
             this.options = Ensure.Argument.NotNull(() => options);
             PushOntoThreadContextStack(state);
