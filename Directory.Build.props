@@ -6,7 +6,7 @@
     <Copyright>Copyright (c) $([System.DateTime]::Now.Year) $(Authors)</Copyright>
   </PropertyGroup>
   <PropertyGroup>
-    <Version>1.0.0-alpha</Version>
+    <Version>1.0.0</Version>
     <Major>$(Version.Split('.')[0])</Major>
     <Minor>$(Version.Split('.')[1])</Minor>
     <Build>$([System.Math]::Floor($([System.DateTime]::Now.Subtract($([System.DateTime]::Parse("01-01-2000"))).TotalDays)))</Build>
@@ -20,7 +20,7 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <Description>Application development library extensions.</Description>
+    <Description>Application Development Library Extensions.</Description>
     <PackageTags>logging log4net</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
