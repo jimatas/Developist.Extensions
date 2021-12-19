@@ -20,8 +20,8 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
-    <Description>Application Development Library Extensions.</Description>
-    <PackageTags>logging log4net</PackageTags>
+    <Description>Adapter that allows log4net to be used with the Microsoft.Extensions.Logging package.</Description>
+    <PackageTags>logging;log4net</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/jimatas/Developist.Extensions</PackageProjectUrl>
