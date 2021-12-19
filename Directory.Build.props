@@ -24,8 +24,8 @@
     <PackageTags>logging;log4net</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>License.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/jimatas/Developist.Extensions</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/jimatas/Developist.Extensions</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/jimatas/Developist.Extensions.Logging</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jimatas/Developist.Extensions.Logging</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
   <ItemGroup>
