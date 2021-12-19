@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Product>Developist.Extensions</Product>
+    <Product>Developist.Extensions.Logging</Product>
     <Authors>Jim Atas</Authors>
     <Company>Developist</Company>
     <Copyright>Copyright (c) $([System.DateTime]::Now.Year) $(Authors)</Copyright>
