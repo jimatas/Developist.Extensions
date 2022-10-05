@@ -1,10 +1,6 @@
-﻿// Copyright (c) 2021 Jim Atas. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for details.
+﻿using Microsoft.Extensions.Logging;
 
-using Developist.Core.Utilities;
-
-using Microsoft.Extensions.Logging;
-
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
@@ -12,33 +8,39 @@ using System.Xml;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public class LoggerProvider : DisposableBase, ILoggerProvider
+    public sealed class LoggerProvider : ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, LoggerAdapter> loggers = new ConcurrentDictionary<string, LoggerAdapter>();
         private readonly LoggerOptions options;
-        private log4net.Repository.ILoggerRepository loggerRepository;
+        private log4net.Repository.ILoggerRepository? loggerRepository;
 
         public LoggerProvider(LoggerOptions options)
         {
-            this.options = Ensure.Argument.NotNull(() => options);
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
             InitializeLoggerRepository();
         }
 
         public ILogger CreateLogger(string categoryName)
         {
-            Ensure.Argument.NotNullOrEmpty(() => categoryName);
+            if (categoryName is null)
+            {
+                throw new ArgumentNullException(nameof(categoryName));
+            }
+
+            if (categoryName.Trim().Length == 0)
+            {
+                throw new ArgumentException(
+                    message: "Value cannot be " + (categoryName.Length == 0 ? "empty." : "all white space."),
+                    paramName: nameof(categoryName));
+            }
 
             return loggers.GetOrAdd(categoryName, CreateLogger);
 
             LoggerAdapter CreateLogger(string _)
-               => new LoggerAdapter(log4net.LogManager.GetLogger(loggerRepository.Name, categoryName), options);
+               => new LoggerAdapter(log4net.LogManager.GetLogger(loggerRepository!.Name, categoryName), options);
         }
 
-        protected override void ReleaseManagedResources()
-        {
-            loggers.Clear();
-            base.ReleaseManagedResources();
-        }
+        public void Dispose() => loggers.Clear();
 
         private void InitializeLoggerRepository()
         {

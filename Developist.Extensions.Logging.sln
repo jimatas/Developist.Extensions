@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Developist.Extensions.Logging.Log4Net", "Developist.Extensions.Logging.Log4Net\Developist.Extensions.Logging.Log4Net.csproj", "{51519ACD-781E-4F2D-87E0-E967E5DE0FF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Developist.Extensions.Logging.Log4Net", "Developist.Extensions.Logging.Log4Net\Developist.Extensions.Logging.Log4Net.csproj", "{51519ACD-781E-4F2D-87E0-E967E5DE0FF9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4B91CF62-AFC0-4154-AAC8-428D30ED2CA9}"
 	ProjectSection(SolutionItems) = preProject
-		Developist.Extensions.Logging.sln.licenseheader = Developist.Extensions.Logging.sln.licenseheader
 		Directory.Build.props = Directory.Build.props
-		License.txt = License.txt
 	EndProjectSection
 EndProject
 Global

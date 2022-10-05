@@ -1,7 +1,4 @@
-﻿// Copyright (c) 2021 Jim Atas. All rights reserved.
-// Licensed under the MIT License. See License.txt in the project root for details.
-
-using Developist.Core.Utilities;
+﻿using Developist.Extensions.Logging.Log4Net.Utilities;
 
 using System;
 using System.Collections;
@@ -10,26 +7,24 @@ using System.Linq;
 
 namespace Developist.Extensions.Logging.Log4Net
 {
-    public class LogScope : DisposableBase
+    public sealed class LogScope : IDisposable
     {
         private readonly Stack<IDisposable> disposables = new Stack<IDisposable>();
         private readonly LoggerOptions options;
 
         public LogScope(object state, LoggerOptions options)
         {
-            this.options = Ensure.Argument.NotNull(() => options);
+            this.options = options ?? throw new ArgumentNullException(nameof(options));
             PushOntoThreadContextStack(state);
         }
 
-        protected override void ReleaseManagedResources()
+        public void Dispose()
         {
             while (disposables.Any())
             {
                 disposables.Pop().Dispose();
             }
             disposables.Clear();
-
-            base.ReleaseManagedResources();
         }
 
         private void PushOntoThreadContextStack(object state)
@@ -43,9 +38,9 @@ namespace Developist.Extensions.Logging.Log4Net
             {
                 disposables.Push(log4net.LogicalThreadContext.Stacks[options.DefaultScopeName].Push(str));
             }
-            else if (state is IEnumerable collection)
+            else if (state is IEnumerable states)
             {
-                PushOntoThreadContextStack(collection);
+                PushOntoThreadContextStack(states);
             }
             else
             {
@@ -53,9 +48,9 @@ namespace Developist.Extensions.Logging.Log4Net
             }
         }
 
-        private void PushOntoThreadContextStack(IEnumerable collection)
+        private void PushOntoThreadContextStack(IEnumerable states)
         {
-            foreach (var item in collection)
+            foreach (var item in states)
             {
                 if (item is null)
                 {
